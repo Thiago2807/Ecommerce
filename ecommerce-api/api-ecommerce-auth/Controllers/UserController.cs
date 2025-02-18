@@ -25,6 +25,25 @@ public class UserController(IUserHandler userHandler) : ControllerBase
         }
     }
 
+    [HttpPost("login")]
+    public async Task<IActionResult> LoginAsync([FromBody] AuthLoginInputDto input)
+    {
+        try
+        {
+            ResponseApp<AuthLoginDto> response = await _userHandler.LoginUserHandler(input.Email, input.Password);
+
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ResponseApp<object>()
+            {
+                Error = true,
+                Message = ex.Message
+            });
+        }
+    }
+
     [HttpGet("user/{id}")]
     public async Task<IActionResult> GetAsync([FromRoute] string id)
     {

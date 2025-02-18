@@ -19,6 +19,7 @@ builder.Services.AddControllers()
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddValidations();
+builder.Services.AddJwt(builder.Configuration);
 
 builder.Services.AddDependencyInjection(builder.Configuration);
 
@@ -26,6 +27,7 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

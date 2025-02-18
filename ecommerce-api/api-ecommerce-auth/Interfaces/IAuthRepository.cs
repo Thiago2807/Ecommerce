@@ -2,7 +2,7 @@
 
 public interface IAuthRepository
 {
-    Task<UserModel> GetUserAsync(string id);
+    Task<UserModel?> GetUserAsync(string id = "", string email = "");
     Task InsertUserAsync(UserModel user);
     Task UpdateUserAsync(string id, UserModel user);
 }
