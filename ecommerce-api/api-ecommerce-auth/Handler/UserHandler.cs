@@ -8,7 +8,8 @@ public class UserHandler(IAuthRepository authRepository, IConfiguration configur
 
     public async Task<ResponseApp<UserModel>> GetUserHandler(string id)
     {
-        UserModel? user = await _authRepository.GetUserAsync(id: id);
+        UserModel? user = await _authRepository.GetUserAsync(id: id) 
+            ?? throw new NotFoundExceptionCustom("Nenhum usuário encontrado.");
 
         return new() 
         { 
@@ -39,16 +40,9 @@ public class UserHandler(IAuthRepository authRepository, IConfiguration configur
 
     public async Task<ResponseApp<AuthLoginDto>> LoginUserHandler(string email, string password)
     {
-        UserModel? user = await _authRepository.GetUserAsync(email: email);
+        UserModel user = await _authRepository.GetUserAsync(email: email) 
+            ?? throw new NotFoundExceptionCustom("Nenhum usuário encontrado.");
 
-        if (user == null)
-        {
-            return new()
-            {
-                Error = true,
-                Message = "Usuário não encontrado."
-            };
-        }
 
         byte[] hash = Convert.FromBase64String(user.Hash);
         byte[] salt = Convert.FromBase64String(user.Salt);
@@ -56,13 +50,7 @@ public class UserHandler(IAuthRepository authRepository, IConfiguration configur
         bool response = AuthHelper.VerifyPasswordHash(password, hash, salt);
 
         if (!response)
-        {
-            return new()
-            {
-                Error = true,
-                Message = "Senha inválida, verifique e tente novamente."
-            };
-        }
+            throw new BadRequestExceptionCustom("Senha inválida, verifique e tente novamente.");
 
         var secretKey = configuration.GetSection("JWT:secret-key").Value;
         var issuer = configuration.GetSection("JWT:issuer").Value;
@@ -70,7 +58,7 @@ public class UserHandler(IAuthRepository authRepository, IConfiguration configur
 
         if (string.IsNullOrEmpty(secretKey) || string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience))
         {
-            throw new Exception("Informações para o token JWT inválidos, verifique o arquivo de configurações.");
+            throw new BadRequestExceptionCustom("Informações para o token JWT inválidos, verifique o arquivo de configurações.");
         }
 
         string tokenJwt = AuthHelper.CreateTokenJwt(user, secretKey, issuer, audience);

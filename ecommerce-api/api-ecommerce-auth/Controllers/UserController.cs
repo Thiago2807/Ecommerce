@@ -9,76 +9,32 @@ public class UserController(IUserHandler userHandler) : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> InsertAsync([FromBody] AuthInsertDto user)
     {
-        try
-        {
-            ResponseApp<AuthInsertDto> response = await _userHandler.InsertUserHandler(user);
+        ResponseApp<AuthInsertDto> response = await _userHandler.InsertUserHandler(user);
 
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new ResponseApp<object>()
-            {
-                Error = true,
-                Message = ex.Message
-            });
-        }
+        return Ok(response);
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> LoginAsync([FromBody] AuthLoginInputDto input)
     {
-        try
-        {
-            ResponseApp<AuthLoginDto> response = await _userHandler.LoginUserHandler(input.Email, input.Password);
+        ResponseApp<AuthLoginDto> response = await _userHandler.LoginUserHandler(input.Email, input.Password);
 
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new ResponseApp<object>()
-            {
-                Error = true,
-                Message = ex.Message
-            });
-        }
+        return Ok(response);
     }
 
     [HttpGet("user/{id}")]
     public async Task<IActionResult> GetAsync([FromRoute] string id)
     {
-        try
-        {
-            ResponseApp<UserModel> response = await _userHandler.GetUserHandler(id);
+        ResponseApp<UserModel> response = await _userHandler.GetUserHandler(id);
 
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new ResponseApp<object>()
-            {
-                Error = true,
-                Message = ex.Message
-            });
-        }
+        return Ok(response);
     }
 
     [HttpPut("user/{id}")]
     public async Task<IActionResult> UpdateAsync([FromRoute] string id, [FromBody] UserModel user)
     {
-        try
-        {
-            await _userHandler.UpdateUserHandler(id, user);
+        await _userHandler.UpdateUserHandler(id, user);
 
-            return Ok("Usuário atualizado com sucesso!");
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new ResponseApp<object>()
-            {
-                Error = true,
-                Message = ex.Message
-            });
-        }
+        return Ok("Usuário atualizado com sucesso!");
     }
 }

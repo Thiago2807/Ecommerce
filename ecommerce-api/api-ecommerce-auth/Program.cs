@@ -25,6 +25,8 @@ builder.Services.AddDependencyInjection(builder.Configuration);
 
 var app = builder.Build();
 
+app.UseExceptionHandler(o => { });
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
