@@ -3,8 +3,6 @@
 public interface IUserHandler
 {
     Task<ResponseApp<UserModel>> GetUserHandler(string id);
-    Task<ResponseApp<AuthInsertDto>> InsertUserHandler(AuthInsertDto user);
     Task UpdateUserHandler(string id, UserModel user);
-    Task<ResponseApp<AuthLoginDto>> LoginUserHandler(string email, string password);
     Task<PaginationInputModel> GetUsersHandler(PaginationModel pagination, IQueryCollection query);
 }

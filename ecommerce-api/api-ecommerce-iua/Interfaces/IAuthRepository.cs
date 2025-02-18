@@ -2,8 +2,5 @@
 
 public interface IAuthRepository
 {
-    Task<UserModel?> GetUserAsync(string id = "", string email = "");
     Task InsertUserAsync(UserModel user);
-    Task UpdateUserAsync(string id, UserModel user);
-    Task<PaginationInputModel> GetUsersAsync(IQueryCollection query, int page, int pageSize);
 }
