@@ -1,0 +1,2 @@
+gtw - Gateway - https - 5010
+iua - Identity User Api - https/http - 5011/5001

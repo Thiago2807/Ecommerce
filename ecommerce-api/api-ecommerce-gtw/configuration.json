@@ -1,33 +1,21 @@
 {
   "Routes": [
     {
-      "UpstreamPathTemplate": "/api/v1/auth/register", // Rota publica para o usuário utilizar
-      "UpstreamHttpMethod": [ "POST" ],
-      "DownstreamPathTemplate": "/api/v1/register", // Rota que o gtw vai bater na API Interna
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5001
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/api/v1/auth/login", // Rota publica para o usuário utilizar
-      "UpstreamHttpMethod": [ "POST" ],
-      "DownstreamPathTemplate": "/api/v1/login", // Rota que o gtw vai bater na API Interna
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5001
-        }
-      ]
-    },
-    {
       "UpstreamPathTemplate": "/api/v1/auth/{everything}", // Rota publica para o usuário utilizar
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "UpstreamHttpMethod": [ "POST" ],
       "DownstreamPathTemplate": "/api/v1/{everything}", // Rota que o gtw vai bater na API Interna
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/api/v1/user/{everything}", // Rota publica para o usuário utilizar
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "DownstreamPathTemplate": "/api/v1/user/{everything}", // Rota que o gtw vai bater na API Interna
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
