@@ -30,8 +30,13 @@ public class AuthHelper
         return true;
     }
 
-    public static string CreateTokenJwt(UserModel user, string key, string issuer, string audience)
+    public static string CreateTokenJwt(UserModel user, string? key, string? issuer, string? audience)
     {
+        if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience))
+        {
+            throw new BadRequestExceptionCustom("Informações para o token JWT inválidos, verifique o arquivo de configurações.");
+        }
+
         // Geração do Token
         var tokenHandler = new JwtSecurityTokenHandler();
         var keyApp = Encoding.UTF8.GetBytes(key);

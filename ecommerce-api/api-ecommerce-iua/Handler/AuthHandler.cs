@@ -38,6 +38,18 @@ public class AuthHandler(IAuthRepository authRepository, IUserRepository userRep
         UserModel user = await userRepository.GetUserAsync(email: email)
             ?? throw new NotFoundExceptionCustom("Nenhum usuário encontrado.");
 
+        if (user.Blocked && user.BlockedUntil >= DateTime.UtcNow)
+        {
+            throw new BadRequestExceptionCustom("Usuário bloqueado, aguarde e tente novamente.");
+        }
+        else if (user.BlockedUntil < DateTime.UtcNow)
+        {
+            user.Blocked = false;
+            user.BlockedUntil = null;
+            user.AttemptsPassword = 0;
+
+            await _userRepository.UpdateUserAsync(user.Id, user);
+        }
 
         byte[] hash = Convert.FromBase64String(user.Hash);
         byte[] salt = Convert.FromBase64String(user.Salt);
@@ -45,18 +57,32 @@ public class AuthHandler(IAuthRepository authRepository, IUserRepository userRep
         bool response = AuthHelper.VerifyPasswordHash(password, hash, salt);
 
         if (!response)
+        {
+            user.AttemptsPassword += 1;
+
+            if (user.AttemptsPassword == 5)
+            {
+                user.Blocked = true;
+                user.BlockedUntil = DateTime.UtcNow.AddMinutes(5);
+            }
+
+            await _userRepository.UpdateUserAsync(user.Id, user);
             throw new BadRequestExceptionCustom("Senha inválida, verifique e tente novamente.");
+        }
 
         var secretKey = configuration.GetSection("JWT:secret-key").Value;
         var issuer = configuration.GetSection("JWT:issuer").Value;
         var audience = configuration.GetSection("JWT:audience").Value;
 
-        if (string.IsNullOrEmpty(secretKey) || string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience))
-        {
-            throw new BadRequestExceptionCustom("Informações para o token JWT inválidos, verifique o arquivo de configurações.");
-        }
-
         string tokenJwt = AuthHelper.CreateTokenJwt(user, secretKey, issuer, audience);
+
+        if (user.AttemptsPassword > 0)
+        {
+            user.AttemptsPassword = 0;
+        }
+        user.LastAccess = DateTime.UtcNow;
+
+        await _userRepository.UpdateUserAsync(user.Id, user);
 
         return new()
         {
