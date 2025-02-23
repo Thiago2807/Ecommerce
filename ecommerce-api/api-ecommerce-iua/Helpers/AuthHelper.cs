@@ -1,5 +1,4 @@
-﻿using DnsClient;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -59,5 +58,22 @@ public class AuthHelper
         var tokenString = tokenHandler.WriteToken(token);
 
         return tokenString;
+    }
+
+    public static string GenerateRandomPassword(int tamanho)
+    {
+        const string caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        char[] senha = new char[tamanho];
+
+        byte[] bytesAleatorios = new byte[tamanho];
+
+        RandomNumberGenerator.Fill(bytesAleatorios);
+
+        for (int i = 0; i < tamanho; i++)
+        {
+            senha[i] = caracteres[bytesAleatorios[i] % caracteres.Length];
+        }
+
+        return new string(senha);
     }
 }

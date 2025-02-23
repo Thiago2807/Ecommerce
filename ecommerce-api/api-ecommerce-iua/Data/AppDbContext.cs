@@ -16,5 +16,5 @@ public class AppDbContext
 
     // Retornar a coleção
     public IMongoCollection<UserModel> GetCollectionUser() 
-        => _database.GetCollection<UserModel>("users");
+        => _database.GetCollection<UserModel>("iua-users");
 }

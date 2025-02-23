@@ -1,4 +1,6 @@
-﻿namespace api_ecommerce_auth.Handler;
+﻿using ecommerce_core.Helpers;
+
+namespace api_ecommerce_auth.Handler;
 
 public class AuthHandler(IAuthRepository authRepository, IUserRepository userRepository, IConfiguration configuration)
     : IAuthHandler
@@ -91,5 +93,39 @@ public class AuthHandler(IAuthRepository authRepository, IUserRepository userRep
                 Token = tokenJwt,
             },
         };
+    }
+
+    public async Task RecoverPasswordHandler(string email)
+    {
+        UserModel user = await _userRepository.GetUserAsync(email: email) 
+            ?? throw new NotFoundExceptionCustom("Usuário não encontrado.");
+
+        string randomPassword = AuthHelper.GenerateRandomPassword(10);
+
+        (byte[] hash, byte[] salt) = AuthHelper.CreatePasswordHash(randomPassword);
+
+        user.Hash = Convert.ToBase64String(hash);
+        user.Salt = Convert.ToBase64String(salt);
+
+        try
+        {
+            await _userRepository.UpdateUserAsync(user.Id, user);
+        }
+        catch (Exception)
+        {
+            throw new Exception("Não foi possível redefinir a senha.");
+        }
+
+        EmailModel emailModel = EmailHelper.GetCredentials(configuration);
+
+        emailModel.RecipientName = user.Name;
+        emailModel.EmailRecipient = user.Email;
+        emailModel.Subject = "Recuperação de senha";
+        emailModel.Body = $@"
+            <p>Senha restaurada com sucesso!</p>
+            <p>Sua nova senha temporaria é {randomPassword}</p>
+        ";
+
+        await EmailHelper.SendEmail(emailModel);
     }
 }

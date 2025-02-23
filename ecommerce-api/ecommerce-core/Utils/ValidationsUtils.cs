@@ -8,6 +8,7 @@ public static class ValidationsUtils
     {
         services.AddValidatorsFromAssemblyContaining<AuthInsertValidation>();
         services.AddValidatorsFromAssemblyContaining<PaginationModelValidation>();
+        services.AddValidatorsFromAssemblyContaining<RecoverPasswordValidation>();
 
         // Adicionado no pipe da requisição para realizar as validações de maneira automatica
         services.AddFluentValidationAutoValidation(options =>

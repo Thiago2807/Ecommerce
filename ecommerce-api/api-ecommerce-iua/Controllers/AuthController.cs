@@ -21,4 +21,15 @@ public class AuthController(IUserHandler userHandler, IAuthHandler authHandler) 
 
         return Ok(response);
     }
+
+    [HttpPost("recover-password")]
+    public async Task<IActionResult> RecoverPasswordAsync([FromBody] RecoverPasswordDto input)
+    {
+        await authHandler.RecoverPasswordHandler(input.Email);
+
+        return Ok(new ResponseApp<object>()
+        {
+            Message = "Sua senha temporária foi enviada para o e-mail cadastrado em sua conta."
+        });
+    }
 }
