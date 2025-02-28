@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:marketplace/core/const.dart';
 import 'package:marketplace/core/routes.dart';
+import 'package:marketplace/shared/store/app_store.dart';
 import 'package:marketplace/src/auth/model/auth_login_model.dart';
 import 'package:marketplace/utils/preferences_utils.dart';
+import 'package:provider/provider.dart';
 
 class SplashHandler {
   static Future<void> initializeApp(BuildContext context) async {
@@ -55,6 +57,13 @@ class SplashHandler {
       return;
     } else {
       if (context.mounted) {
+        final AppStore appStore = Provider.of<AppStore>(context, listen: false);
+
+        appStore.addCredential(
+          token: modelCredentials.token,
+          expirationToken: modelCredentials.expiration,
+        );
+
         Navigator.pushNamedAndRemoveUntil(
           context,
           RoutesName.home,

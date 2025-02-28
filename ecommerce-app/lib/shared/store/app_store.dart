@@ -13,14 +13,9 @@ abstract class _AppStore with Store {
   DateTime? expirationToken;
 
   @action
-  void addCredential({required String token, required String expirationToken}) {
-    DateTime? expirationTokenFormat = DateTime.tryParse(expirationToken);
-
-    if (expirationTokenFormat == null) {
-      throw Exception("Não foi possível converter a data de expiração.");
-    } 
+  void addCredential({required String token, required DateTime expirationToken}) {
 
     this.token = token;
-    this.expirationToken = expirationTokenFormat;
+    this.expirationToken = expirationToken;
   }
 }

@@ -25,10 +25,27 @@ mixin _$AuthStore on _AuthStore, Store {
     });
   }
 
+  late final _$viewLoginAtom =
+      Atom(name: '_AuthStore.viewLogin', context: context);
+
+  @override
+  bool get viewLogin {
+    _$viewLoginAtom.reportRead();
+    return super.viewLogin;
+  }
+
+  @override
+  set viewLogin(bool value) {
+    _$viewLoginAtom.reportWrite(value, super.viewLogin, () {
+      super.viewLogin = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
-viewPassword: ${viewPassword}
+viewPassword: ${viewPassword},
+viewLogin: ${viewLogin}
     ''';
   }
 }

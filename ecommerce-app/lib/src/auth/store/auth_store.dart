@@ -8,12 +8,14 @@ abstract class _AuthStore with Store {
   @observable
   bool viewPassword = false;
 
+  @observable
+  bool viewLogin = true;
+
   void alterViewPassword() {
-    if (viewPassword) {
-      viewPassword = false;
-    }
-    else {
-      viewPassword = true;
-    }
+    viewPassword = !viewPassword;
+  }
+
+  void alterView() {
+    viewLogin = !viewLogin;
   }
 }

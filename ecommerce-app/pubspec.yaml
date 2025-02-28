@@ -44,6 +44,8 @@ dependencies:
   gap: ^3.0.1
   shared_preferences: ^2.5.2
   flutter_dotenv: ^5.2.1
+  email_validator: ^3.0.0
+  password_strength: ^0.2.0
 
 dev_dependencies:
   flutter_test:

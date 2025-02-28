@@ -29,6 +29,7 @@ class TextFormAuthModel {
 TextFormField inputAuthComponents(
   BuildContext context, {
   required TextFormAuthModel model,
+  Function(String?)? validation,
 }) {
   final AuthStore authStore = Provider.of<AuthStore>(context, listen: false);
   final Size size = MediaQuery.sizeOf(context);
@@ -40,6 +41,7 @@ TextFormField inputAuthComponents(
     obscureText: model.isPassword ? model.stateViewPassword : false,
     cursorColor: Color(ColorsApp.primary),
     cursorRadius: Radius.circular(size.width),
+    validator: validation == null ? null : (value) => validation(value),
     decoration: decorationInput(
       size: size,
       label: model.label,
@@ -51,20 +53,30 @@ TextFormField inputAuthComponents(
     onFieldSubmitted: (_) {
       if (model.theLastForm) {
         FocusScope.of(context).unfocus();
-      } 
-      else {
+      } else {
         FocusScope.of(context).requestFocus(model.nextFocus);
       }
     },
   );
 }
 
-OutlineInputBorder borderInput({required String type, required Size size}) {
+OutlineInputBorder borderInput({
+  required String type,
+  required Size size,
+  Color? colorBorder,
+  required bool error,
+}) {
+  if (type == "focus") {
+    colorBorder = error ? Colors.redAccent : Color(ColorsApp.primary);
+  } else {
+    colorBorder = error ? Colors.redAccent.shade400 : Color(ColorsApp.gray);
+  }
+
   return OutlineInputBorder(
     borderRadius: BorderRadius.circular(size.width),
     borderSide: BorderSide(
-      width: .5,
-      color: type == "focus" ? Color(ColorsApp.primary) : Color(ColorsApp.gray),
+      width: error ? 1 : .5,
+      color: colorBorder,
     ),
   );
 }
@@ -85,8 +97,10 @@ InputDecoration decorationInput({
         color: Color(ColorsApp.gray),
       ),
     ),
-    focusedBorder: borderInput(type: "focus", size: size),
-    enabledBorder: borderInput(type: "enabled", size: size),
+    focusedBorder: borderInput(type: "focus", size: size, error: false),
+    enabledBorder: borderInput(type: "enabled", size: size, error: false),
+    errorBorder: borderInput(type: "enabled", size: size, error: true),
+    focusedErrorBorder: borderInput(type: "enabled", size: size, error: true),
     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
     prefixIcon: Icon(
       prefixIcon,
@@ -106,5 +120,11 @@ InputDecoration decorationInput({
               color: Colors.transparent,
             ),
     ),
+    errorStyle: GoogleFonts.inter(
+      fontSize: 12,
+      color: Colors.red, // defina a cor desejada para o erro
+      fontWeight: FontWeight.w500,
+    ),
+    errorMaxLines: 1,
   );
 }

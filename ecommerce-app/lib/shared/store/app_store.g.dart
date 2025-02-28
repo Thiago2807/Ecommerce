@@ -44,7 +44,8 @@ mixin _$AppStore on _AppStore, Store {
       ActionController(name: '_AppStore', context: context);
 
   @override
-  void addCredential({required String token, required String expirationToken}) {
+  void addCredential(
+      {required String token, required DateTime expirationToken}) {
     final _$actionInfo = _$_AppStoreActionController.startAction(
         name: '_AppStore.addCredential');
     try {
