@@ -1,2 +1,8 @@
-gtw - Gateway - https - 5010
-iua - Identity User Api - https/http - 5011/5001
+gtw - Gateway - https 		- https/http - 5010/4999
+iua - Identity User Api 	- https/http - 5011/5001
+
+pct - Catálogo e Produtos 	- https/http - 5012/5002 (2º)
+est - Estoque- https/http 	- https/http - 5013/5003 (4º)
+prm - Promoções e Cupons	- https/http - 5014/5004 (5º)
+frn - Fornecedores		- https/http - 5015/5005 (5º)
+loj - Lojas- https/http 	- https/http - 5016/5006 (1º)
