@@ -9,6 +9,12 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Handler\" />
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ecommerce-core\ecommerce-core.csproj" />
   </ItemGroup>
 
 </Project>
