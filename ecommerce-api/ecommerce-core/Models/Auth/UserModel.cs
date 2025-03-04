@@ -1,4 +1,6 @@
-﻿namespace ecommerce_core.Models.Auth;
+﻿using ecommerce_core.Models.Bases;
+
+namespace ecommerce_core.Models.Auth;
 
 public sealed class UserModel : BaseModel
 {

@@ -1,4 +1,4 @@
-﻿namespace ecommerce_core.Models;
+﻿namespace ecommerce_core.Models.Bases;
 
 public class BaseModel
 {
