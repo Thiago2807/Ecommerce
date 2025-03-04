@@ -6,6 +6,6 @@ namespace api_ecommerce_loj.Interfaces;
 public interface IStoreRepository
 {
     Task<StoreModel?> GetStoreAsync(string id);
-    Task UpdateUserAsync(string id, StoreModel user);
-    Task<PaginationInputModel> GetUsersAsync(IQueryCollection query, int page, int pageSize);
+    Task UpdateStoreAsync(string id, StoreModel user);
+    Task<PaginationInputModel> GetStoresAsync(IQueryCollection query, int page, int pageSize);
 }

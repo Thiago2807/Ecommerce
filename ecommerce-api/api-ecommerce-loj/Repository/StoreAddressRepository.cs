@@ -12,7 +12,7 @@ public class StoreAddressRepository (AppDbContext _context)
 {
     private readonly IMongoCollection<StoreAddressModel> collectionStoreAdress = _context.GetStoresAddressCollection();
 
-    public async Task<StoreAddressModel?> GetStoreAsync(string id)
+    public async Task<StoreAddressModel?> GetStoreAddressAsync(string id)
     {
         FilterDefinition<StoreAddressModel> filter;
 
@@ -23,10 +23,10 @@ public class StoreAddressRepository (AppDbContext _context)
         return response;
     }
 
-    public async Task UpdateUserAsync(string id, StoreAddressModel user)
-    => await collectionStoreAdress.ReplaceOneAsync(x => x.Id == id, user);
+    public async Task UpdateStoreAddressAsync(string id, StoreAddressModel user)
+        => await collectionStoreAdress.ReplaceOneAsync(x => x.Id == id, user);
 
-    public async Task<PaginationInputModel> GetUsersAsync(IQueryCollection query, int page, int pageSize)
+    public async Task<PaginationInputModel> GetStoreAddressAsync(IQueryCollection query, int page, int pageSize)
     {
         var skip = (page - 1) * pageSize;
 

@@ -12,7 +12,7 @@ public class StoreContactRepository (AppDbContext _context)
 {
     private readonly IMongoCollection<StoreContactModel> collectionStoreContact = _context.GeStoresContactCollection();
 
-    public async Task<StoreContactModel?> GetStoreAsync(string id)
+    public async Task<StoreContactModel?> GetStoreContactAsync(string id)
     {
         FilterDefinition<StoreContactModel> filter;
 
@@ -23,13 +23,13 @@ public class StoreContactRepository (AppDbContext _context)
         return response;
     }
 
-    public async Task UpdateUserAsync(string id, StoreContactModel user)
+    public async Task UpdateStoreContactAsync(string id, StoreContactModel user)
     => await collectionStoreContact.ReplaceOneAsync(x => x.Id == id, user);
 
     public async Task RemoveStoreContactAsync(string id)
         => await collectionStoreContact.DeleteOneAsync(x => x.Id == id);
 
-    public async Task<PaginationInputModel> GetUsersAsync(IQueryCollection query, int page, int pageSize)
+    public async Task<PaginationInputModel> GetStoreContactAsync(IQueryCollection query, int page, int pageSize)
     {
         var skip = (page - 1) * pageSize;
 

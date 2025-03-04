@@ -23,10 +23,10 @@ public class StoreRepository (AppDbContext _context)
         return response;
     }
 
-    public async Task UpdateUserAsync(string id, StoreModel user)
+    public async Task UpdateStoreAsync(string id, StoreModel user)
     => await collectionStore.ReplaceOneAsync(x => x.Id == id, user);
 
-    public async Task<PaginationInputModel> GetUsersAsync(IQueryCollection query, int page, int pageSize)
+    public async Task<PaginationInputModel> GetStoresAsync(IQueryCollection query, int page, int pageSize)
     {
         var skip = (page - 1) * pageSize;
 
