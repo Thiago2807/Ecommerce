@@ -12,6 +12,13 @@ public class StoreAddressRepository (AppDbContext _context)
 {
     private readonly IMongoCollection<StoreAddressModel> collectionStoreAdress = _context.GetStoresAddressCollection();
 
+    public async Task<StoreAddressModel> AddStoreAddressAsync(StoreAddressModel input)
+    {
+        await collectionStoreAdress.InsertOneAsync(input);
+
+        return input;
+    }
+
     public async Task<StoreAddressModel?> GetStoreAddressAsync(string id)
     {
         FilterDefinition<StoreAddressModel> filter;

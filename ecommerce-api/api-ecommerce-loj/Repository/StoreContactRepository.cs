@@ -12,6 +12,20 @@ public class StoreContactRepository (AppDbContext _context)
 {
     private readonly IMongoCollection<StoreContactModel> collectionStoreContact = _context.GeStoresContactCollection();
 
+    public async Task<T> AddStoreContactAsync<T>(StoreContactModel? input, List<StoreContactModel> inputList)
+    {
+        if (input != null)
+        {
+            await collectionStoreContact.InsertOneAsync(input);
+        }
+        else
+        {
+            await collectionStoreContact.InsertManyAsync(inputList!);
+        }
+        
+        return (T)(input == null ? input as object : inputList);
+    }
+
     public async Task<StoreContactModel?> GetStoreContactAsync(string id)
     {
         FilterDefinition<StoreContactModel> filter;

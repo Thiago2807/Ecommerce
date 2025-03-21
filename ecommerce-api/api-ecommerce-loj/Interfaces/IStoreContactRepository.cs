@@ -9,4 +9,5 @@ public interface IStoreContactRepository
     Task UpdateStoreContactAsync(string id, StoreContactModel user);
     Task RemoveStoreContactAsync(string id);
     Task<PaginationInputModel> GetStoreContactAsync(IQueryCollection query, int page, int pageSize);
+    Task<T> AddStoreContactAsync<T>(StoreContactModel? input, List<StoreContactModel> inputList);
 }

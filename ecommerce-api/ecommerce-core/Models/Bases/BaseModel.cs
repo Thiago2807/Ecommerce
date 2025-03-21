@@ -4,7 +4,7 @@ public class BaseModel
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; } = string.Empty;
+    public string? Id { get; set; }
 
     [BsonElement("createdIn")]
     public DateTime CreatedIn { get; set; } = DateTime.UtcNow;

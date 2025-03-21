@@ -12,6 +12,13 @@ public class StoreRepository (AppDbContext _context)
 {
     private readonly IMongoCollection<StoreModel> collectionStore = _context.GetStoresCollection();
 
+    public async Task<StoreModel> AddStoreAsync(StoreModel input)
+    {
+        await collectionStore.InsertOneAsync(input);
+
+        return input;
+    }
+
     public async Task<StoreModel?> GetStoreAsync(string id)
     {
         FilterDefinition<StoreModel> filter;

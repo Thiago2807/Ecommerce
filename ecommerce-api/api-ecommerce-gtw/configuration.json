@@ -26,6 +26,25 @@
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
+      },
+      "AddClaimsToHeaders": {
+        "X-User-Id": "id"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/v1/store/{everything}", // Rota publica para o usuário utilizar
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "DownstreamPathTemplate": "/api/v1/{everything}", // Rota que o gtw vai bater na API Interna
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5006
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
       }
     }
   ],

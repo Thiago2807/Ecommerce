@@ -2,12 +2,15 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile("configuration.json", optional: false, reloadOnChange: true)
     .AddEnvironmentVariables();
+
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -21,11 +24,12 @@ builder.Services.AddAuthentication(options =>
 
     if (string.IsNullOrEmpty(secretKey) || string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience))
     {
-        throw new Exception("Informações para o token JWT inválidos, verifique o arquivo de configurações.");
+        throw new Exception("Informaï¿½ï¿½es para o token JWT invï¿½lidos, verifique o arquivo de configuraï¿½ï¿½es.");
     }
 
     options.RequireHttpsMetadata = false;
     options.SaveToken = true;
+    options.MapInboundClaims = false;
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -38,7 +42,8 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddOcelot(builder.Configuration);
+builder.Services
+    .AddOcelot(builder.Configuration);
 
 var app = builder.Build();
 

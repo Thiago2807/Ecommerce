@@ -43,7 +43,7 @@ public class AuthHelper
         {
             Subject = new ClaimsIdentity(
             [
-                new(ClaimTypes.NameIdentifier, user.Id),
+                new(ClaimTypes.NameIdentifier, user.Id ?? throw new BadRequestExceptionCustom("Código do usuário inválido")),
                 new(ClaimTypes.Name, user.Name),
                 new(ClaimTypes.Email, user.Email),
                 new(ClaimTypes.Expired, DateTime.UtcNow.AddHours(2).ToString()),
