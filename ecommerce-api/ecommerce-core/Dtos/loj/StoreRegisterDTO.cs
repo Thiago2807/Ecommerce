@@ -56,3 +56,36 @@ public sealed class StoreAddressRegisterDTO
     // Código SIAFI, utilizado para identificar municípios no sistema financeiro do governo.
     public string SiafiCode { get; set; } = string.Empty;
 }
+
+public sealed class StoreRegisterValid : AbstractValidator<StoreRegisterDTO>
+{
+    public StoreRegisterValid()
+    {
+        RuleFor(x => x.Name)
+            .NotEmpty().WithMessage("Nome não pode ser vazio")
+            .NotNull().WithMessage("O nome é obrigatório.");
+
+        RuleFor(x => x.Document)
+            .NotEmpty().WithMessage("Documento não pode ser vazio")
+            .NotNull().WithMessage("O Documento é obrigatório.")
+            .Must(ValidationHelp.IsValidDocument).WithMessage("Documento inválido, verifique e tente novamente");
+
+        RuleFor(x => x.Address)
+            .NotEmpty().WithMessage("Endereço não pode ser vazio")
+            .NotNull().WithMessage("O endereço é obrigatório.");
+    }
+}
+
+public sealed class StoreRegisterContactsValid : AbstractValidator<StoreContactRegisterDTO>
+{
+    public StoreRegisterContactsValid()
+    {
+        RuleFor(x => x.Type)
+            .NotEmpty().WithMessage("Tipo não pode ser vazio")
+            .NotNull().WithMessage("O tipo é obrigatório.");
+
+        RuleFor(x => x.Contact)
+            .NotEmpty().WithMessage("Contato não pode ser vazio")
+            .NotNull().WithMessage("O contato é obrigatório.");
+    }
+}

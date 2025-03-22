@@ -54,4 +54,11 @@ public class StoreRepository (AppDbContext _context)
             QtdTotal = countItems,
         };
     }
+
+    public async Task<bool> CheckStoreAsync(string document)
+    {
+        long result = await collectionStore.CountDocumentsAsync(x => x.Document == document);
+
+        return result > 0;
+    }
 }

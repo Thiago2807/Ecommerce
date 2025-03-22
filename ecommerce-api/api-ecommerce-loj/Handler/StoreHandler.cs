@@ -17,7 +17,15 @@ public class StoreHandler (
     // Criar loja
     public async Task RegisterStoreHandler(StoreRegisterDTO input, string userId)
     {
+        input.Document = input.Document.ExtractDigits();
+
+        bool resultCheckStore = await _storeRepository.CheckStoreAsync(input.Document);
+
+        if (resultCheckStore)
+            throw new BadRequestExceptionCustom("Não é possível cadastrar esta loja, pois já existe um registro com esse documento.");
+
         StoreAddressModel addressModel = input.Address.Adapt<StoreAddressModel>();
+        addressModel.PostalCode = addressModel.PostalCode.ExtractDigits();
 
         addressModel = await _storeAddressRepository.AddStoreAddressAsync(addressModel);
 
@@ -40,7 +48,7 @@ public class StoreHandler (
                 contactModel.Add(new()
                 {
                     Type = item.Type,
-                    Contact = item.Contact,
+                    Contact = item.Type == "phone" ? item.Contact.ExtractDigits() : item.Contact,
                     StoreId = storeModel.Id ?? throw new BadRequestExceptionCustom("Código da loja inválido.")
                 });
             }

@@ -1,0 +1,1 @@
+﻿global using ecommerce_core.Extensions;

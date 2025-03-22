@@ -9,14 +9,12 @@ namespace api_ecommerce_loj.Controllers;
 public class StoreController (IStoreHandler storeHandler)
     : ControllerBase
 {
-    private readonly IStoreHandler _storeHandler = storeHandler;
-
     [HttpPost("add")]
     public async Task<IActionResult> AddStoreAsync([FromBody] StoreRegisterDTO input)
     {
         string userId = Request.Headers.First(x => x.Key == "X-User-Id").Value!;
 
-        await _storeHandler.RegisterStoreHandler(input, userId);
+        await storeHandler.RegisterStoreHandler(input, userId);
 
         return Ok();
     }
