@@ -2,7 +2,7 @@
 
 namespace ecommerce_core.Models.Store;
 
-public sealed class StoreModel : BaseModel
+public class StoreModel : BaseModel
 {
     [BsonElement("name")]
     public string Name { get; set; } = string.Empty;

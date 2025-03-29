@@ -10,4 +10,5 @@ public interface IStoreContactRepository
     Task RemoveStoreContactAsync(string id);
     Task<PaginationInputModel> GetStoreContactAsync(IQueryCollection query, int page, int pageSize);
     Task<T> AddStoreContactAsync<T>(StoreContactModel? input, List<StoreContactModel> inputList);
+    Task<List<StoreContactModel>?> GetStoreContactByStoreAsync(string storeId);
 }

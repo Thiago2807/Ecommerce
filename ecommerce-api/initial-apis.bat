@@ -10,3 +10,5 @@ if %ERRORLEVEL% neq 0 (
 start "gtw" cmd /k "dotnet run --project E:\Projetos\ecommerce\ecommerce-api\api-ecommerce-gtw\api-ecommerce-gtw.csproj"
 
 start "auth" cmd /k "dotnet run --project  E:\Projetos\ecommerce\ecommerce-api\api-ecommerce-iua\api-ecommerce-iua.csproj"
+
+start "loj" cmd /k "dotnet run --project  E:\Projetos\ecommerce\ecommerce-api\api-ecommerce-loj\api-ecommerce-loj.csproj"

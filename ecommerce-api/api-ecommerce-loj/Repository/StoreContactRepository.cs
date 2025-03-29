@@ -37,6 +37,15 @@ public class StoreContactRepository (AppDbContext _context)
         return response;
     }
 
+    public async Task<List<StoreContactModel>?> GetStoreContactByStoreAsync(string storeId)
+    {
+        var filter = Builders<StoreContactModel>.Filter.Eq(x => x.StoreId, storeId);
+
+        var response = await collectionStoreContact.FindSync(filter).ToListAsync();
+
+        return response;
+    }
+
     public async Task UpdateStoreContactAsync(string id, StoreContactModel user)
     => await collectionStoreContact.ReplaceOneAsync(x => x.Id == id, user);
 

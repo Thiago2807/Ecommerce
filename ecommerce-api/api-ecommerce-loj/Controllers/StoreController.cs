@@ -50,4 +50,12 @@ public class StoreController (IStoreHandler storeHandler)
 
         return Ok(response);
     }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> UpdateStoreAddressAsync([FromRoute] string id)
+    {
+        var response = await storeHandler.GetStoreHandler(id);
+
+        return Ok(response);
+    }
 }

@@ -3,6 +3,7 @@ using ecommerce_core.Dtos.loj;
 using ecommerce_core.Models;
 using ecommerce_core.Models.Store;
 using Mapster;
+using MongoDB.Bson;
 
 namespace api_ecommerce_loj.Handler;
 
@@ -135,6 +136,29 @@ public class StoreHandler (
         return new()
         {
             Message = "Endereço atualizado com sucesso!"
+        };
+    }
+
+    public async Task<ResponseApp<StoreDTO>> GetStoreHandler(string storeId)
+    {
+        StoreModel store = await _storeRepository.GetStoreAsync(storeId)
+            ?? throw new Exception("Loja não encontrado.");
+
+        StoreAddressModel address = await _storeAddressRepository.GetStoreAddressAsync(store.AddressId)
+            ?? throw new Exception("Endereço não encontrado.");
+
+        List<StoreContactModel> contact = await _storeContactRepository.GetStoreContactByStoreAsync(store.Id)
+            ?? throw new Exception("Contato não encontrado.");
+
+        StoreDTO storeResponse = store.Adapt<StoreDTO>();
+        List<StoreContactModel> storeContactResponse = contact.Adapt<List<StoreContactModel>>();
+
+        storeResponse.Address = address;
+        storeResponse.Contacts = storeContactResponse;
+
+        return new()
+        {
+            Data = storeResponse
         };
     }
 }
