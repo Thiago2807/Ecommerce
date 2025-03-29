@@ -1,21 +1,25 @@
 ﻿namespace ecommerce_core.Dtos.loj;
 
-public sealed class StoreRegisterDTO
+public sealed class StoreUpdateDTO
 {
+    public string Id { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string Document { get; set; } = string.Empty;
-    public List<StoreContactRegisterDTO> Contacts { get; set; } = [];
-    public StoreAddressRegisterDTO? Address { get; set; }
+    public DateTime UpdatedIn { get; set; } = DateTime.UtcNow;
 }
 
-public sealed class StoreContactRegisterDTO
+public sealed class StoreAddUpdateContactDTO
 {
+    public string? Id { get; set; } = string.Empty;
     public string Type { get; set; } = string.Empty;
     public string Contact { get; set; } = string.Empty;
+    public string StoreId { get; set; } = string.Empty;
+    public DateTime UpdatedIn { get; set; } = DateTime.UtcNow;
 }
 
-public sealed class StoreAddressRegisterDTO
+public sealed class StoreUpdateAddressDTO
 {
+    public string Id { get; set; } = string.Empty;
     // Código Postal (CEP) do endereço.
     public string PostalCode { get; set; } = string.Empty;
 
@@ -54,12 +58,17 @@ public sealed class StoreAddressRegisterDTO
 
     // Código SIAFI, utilizado para identificar municípios no sistema financeiro do governo.
     public string SiafiCode { get; set; } = string.Empty;
+    public DateTime UpdatedIn { get; set; } = DateTime.UtcNow;
 }
 
-public sealed class StoreRegisterValid : AbstractValidator<StoreRegisterDTO>
+public sealed class StoreUpdateValid : AbstractValidator<StoreUpdateDTO>
 {
-    public StoreRegisterValid()
+    public StoreUpdateValid()
     {
+        RuleFor(x => x.Id)
+            .NotEmpty().WithMessage("Id não pode ser vazio")
+            .NotNull().WithMessage("O id é obrigatório.");
+
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Nome não pode ser vazio")
             .NotNull().WithMessage("O nome é obrigatório.");
@@ -68,16 +77,12 @@ public sealed class StoreRegisterValid : AbstractValidator<StoreRegisterDTO>
             .NotEmpty().WithMessage("Documento não pode ser vazio")
             .NotNull().WithMessage("O Documento é obrigatório.")
             .Must(ValidationHelp.IsValidDocument).WithMessage("Documento inválido, verifique e tente novamente");
-
-        RuleFor(x => x.Address)
-            .NotEmpty().WithMessage("Endereço não pode ser vazio")
-            .NotNull().WithMessage("O endereço é obrigatório.");
     }
 }
 
-public sealed class StoreRegisterContactsValid : AbstractValidator<StoreContactRegisterDTO>
+public sealed class StoreContactUpdateValid : AbstractValidator<StoreAddUpdateContactDTO>
 {
-    public StoreRegisterContactsValid()
+    public StoreContactUpdateValid()
     {
         RuleFor(x => x.Type)
             .NotEmpty().WithMessage("Tipo não pode ser vazio")
@@ -86,5 +91,9 @@ public sealed class StoreRegisterContactsValid : AbstractValidator<StoreContactR
         RuleFor(x => x.Contact)
             .NotEmpty().WithMessage("Contato não pode ser vazio")
             .NotNull().WithMessage("O contato é obrigatório.");
+
+        RuleFor(x => x.StoreId)
+            .NotEmpty().WithMessage("StoreId não pode ser vazio")
+            .NotNull().WithMessage("O storeId é obrigatório.");
     }
 }

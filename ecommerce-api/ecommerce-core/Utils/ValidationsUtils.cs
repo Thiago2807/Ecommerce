@@ -12,6 +12,8 @@ public static class ValidationsUtils
         services.AddValidatorsFromAssemblyContaining<RecoverPasswordValidation>();
         services.AddValidatorsFromAssemblyContaining<StoreRegisterValid>();
         services.AddValidatorsFromAssemblyContaining<StoreRegisterContactsValid>();
+        services.AddValidatorsFromAssemblyContaining<StoreUpdateValid>();
+        services.AddValidatorsFromAssemblyContaining<StoreContactUpdateValid>();
 
         // Adicionado no pipe da requisição para realizar as validações de maneira automatica
         services.AddFluentValidationAutoValidation(options =>

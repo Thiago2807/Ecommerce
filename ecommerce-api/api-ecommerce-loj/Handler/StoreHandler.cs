@@ -1,5 +1,6 @@
 ﻿using api_ecommerce_loj.Interfaces;
 using ecommerce_core.Dtos.loj;
+using ecommerce_core.Models;
 using ecommerce_core.Models.Store;
 using Mapster;
 
@@ -14,8 +15,7 @@ public class StoreHandler (
     private readonly IStoreContactRepository _storeContactRepository = storeContactRepository;
     private readonly IStoreAddressRepository _storeAddressRepository = storeAddressRepository;
 
-    // Criar loja
-    public async Task RegisterStoreHandler(StoreRegisterDTO input, string userId)
+    public async Task<ResponseApp<object>> RegisterStoreHandler(StoreRegisterDTO input, string userId)
     {
         input.Document = input.Document.ExtractDigits();
 
@@ -55,29 +55,86 @@ public class StoreHandler (
 
             await _storeContactRepository.AddStoreContactAsync<List<StoreContactModel>>(null, contactModel);
         }
+
+        return new()
+        {
+            Message = "Loja cadastrada com sucesso!",
+            Data = new
+            {
+                id = storeModel.Id,
+                name = storeModel.Name,
+            }
+        };
     }
 
-    // Atualizar dados da loja
-    public async Task UpdateStoreHandler(StoreRegisterDTO input)
+    public async Task<ResponseApp<object>> UpdateStoreHandler(StoreUpdateDTO input)
     {
-        /// Todo: Implement
+        input.Document = input.Document.ExtractDigits();
+
+        StoreModel responseStore = await _storeRepository.GetStoreAsync(input.Id)
+            ?? throw new BadRequestExceptionCustom("Não foi possível localizar a loja especificada.");
+
+        StoreModel store = input.Adapt<StoreModel>();
+
+        store.AddressId = responseStore.AddressId;
+        store.UserId = responseStore.UserId;
+        store.Attributes = responseStore.Attributes;
+        store.CreatedIn = responseStore.CreatedIn;
+
+        await _storeRepository.UpdateStoreAsync(input.Id, store);
+
+        return new()
+        {
+            Message = "Loja Atualizada com sucesso!"
+        };
     }
 
-    // Atualizar Contato
-    public async Task UpdateContactStoreHandler(StoreContactRegisterDTO input)
+    public async Task<ResponseApp<object>> AddContactStoreHandler(List<StoreAddUpdateContactDTO> input)
     {
-        /// Todo: Implement
+        List<StoreContactModel> storeContact = input.Adapt<List<StoreContactModel>>();
+
+        var response = await _storeContactRepository.AddStoreContactAsync
+            <List<StoreContactModel>>(input: null, inputList: storeContact);
+
+        return new()
+        {
+            Message = $"{(input.Count <= 1 ? "Contato adicionado" : "Contatos Adicionados")} com sucesso!",
+            Data = new
+            {
+                idStore = input.FirstOrDefault()?.StoreId ?? ""
+            }
+        };
     }
 
-    // Excluir contato
-    public async Task RemoveContactStoreHandler(string contactId)
+    public async Task<ResponseApp<object>> UpdateContactStoreHandler(StoreAddUpdateContactDTO input)
     {
-        /// Todo: Implement
+        StoreContactModel contact = await _storeContactRepository.GetStoreContactAsync(input.Id!)
+            ?? throw new Exception("Contato não encontrado.");
+
+        StoreContactModel storeContact = input.Adapt<StoreContactModel>();
+        storeContact.CreatedIn = contact.CreatedIn;
+
+        await _storeContactRepository.UpdateStoreContactAsync(storeContact.Id!, storeContact);
+
+        return new()
+        {
+            Message = "Contato atualizado com sucesso!"
+        };
     }
 
-    // Atualizar Endereço
-    public async Task UpdateAddressStoreHandler(StoreAddressRegisterDTO input)
+    public async Task<ResponseApp<object>> UpdateAddressStoreHandler(StoreUpdateAddressDTO input)
     {
-        /// Todo: Implement
+        StoreAddressModel address = await _storeAddressRepository.GetStoreAddressAsync(input.Id!)
+            ?? throw new Exception("Endereço não encontrado.");
+
+        StoreAddressModel storeAddress = input.Adapt<StoreAddressModel>();
+        storeAddress.CreatedIn = address.CreatedIn;
+
+        await _storeAddressRepository.UpdateStoreAddressAsync(storeAddress.Id!, storeAddress);
+
+        return new()
+        {
+            Message = "Endereço atualizado com sucesso!"
+        };
     }
 }

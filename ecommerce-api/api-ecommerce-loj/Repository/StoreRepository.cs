@@ -3,6 +3,7 @@ using api_ecommerce_loj.Interfaces;
 using ecommerce_core.Helpers;
 using ecommerce_core.Models;
 using ecommerce_core.Models.Store;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace api_ecommerce_loj.Repository;
@@ -21,11 +22,9 @@ public class StoreRepository (AppDbContext _context)
 
     public async Task<StoreModel?> GetStoreAsync(string id)
     {
-        FilterDefinition<StoreModel> filter;
+        var filter = Builders<StoreModel>.Filter.Eq(x => x.Id, id);
 
-        filter = Builders<StoreModel>.Filter.Eq(x => x.Id, id);
-
-        var response = await collectionStore.FindSync<StoreModel>(filter).FirstOrDefaultAsync();
+        var response = await collectionStore.Find(filter).FirstOrDefaultAsync();
 
         return response;
     }

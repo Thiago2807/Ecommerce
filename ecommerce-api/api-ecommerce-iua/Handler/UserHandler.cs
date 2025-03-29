@@ -8,7 +8,7 @@ public class UserHandler(IUserRepository userRepository, IConfiguration configur
 
     public async Task<ResponseApp<UserModel>> GetUserHandler(string id)
     {
-        UserModel? user = await userRepository.GetUserAsync(id: id) 
+        UserModel? user = await _userRepository.GetUserAsync(id: id) 
             ?? throw new NotFoundExceptionCustom("Nenhum usuário encontrado.");
 
         return new() 
