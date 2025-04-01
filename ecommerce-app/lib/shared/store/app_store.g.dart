@@ -40,6 +40,21 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
+  late final _$userAtom = Atom(name: '_AppStore.user', context: context);
+
+  @override
+  UserModel get user {
+    _$userAtom.reportRead();
+    return super.user;
+  }
+
+  @override
+  set user(UserModel value) {
+    _$userAtom.reportWrite(value, super.user, () {
+      super.user = value;
+    });
+  }
+
   late final _$_AppStoreActionController =
       ActionController(name: '_AppStore', context: context);
 
@@ -57,10 +72,22 @@ mixin _$AppStore on _AppStore, Store {
   }
 
   @override
+  void addUser(UserModel input) {
+    final _$actionInfo =
+        _$_AppStoreActionController.startAction(name: '_AppStore.addUser');
+    try {
+      return super.addUser(input);
+    } finally {
+      _$_AppStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 token: ${token},
-expirationToken: ${expirationToken}
+expirationToken: ${expirationToken},
+user: ${user}
     ''';
   }
 }

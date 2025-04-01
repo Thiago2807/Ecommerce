@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:marketplace/core/const.dart';
 import 'package:marketplace/core/endpoints.dart';
 import 'package:marketplace/core/routes.dart';
 import 'package:marketplace/shared/model/response_request_model.dart';
+import 'package:marketplace/shared/model/user_model.dart';
 import 'package:marketplace/shared/widgets/snackbar_custom.dart';
 import 'package:marketplace/src/auth/store/auth_store.dart';
 import 'package:marketplace/utils/http_utils.dart';
@@ -41,10 +45,21 @@ class AuthHandler {
         return;
       }
 
+      final responseJWT = JwtDecoder.decode(responseModel.data["token"]);
+
       // Guardar Dados do usuario
       await PreferencesUtils.insertAsync(
         key: credentialsKey,
         value: responseModel.data.toString(),
+      );
+
+      final user =
+          UserModel(id: responseJWT["nameid"], email: responseJWT["email"]);
+
+      // Adicionando dados relacionados ao usuário
+      await PreferencesUtils.insertAsync(
+        key: userKey,
+        value: jsonEncode(user.toJson()),
       );
 
       if (context.mounted) {
@@ -66,7 +81,7 @@ class AuthHandler {
     required TextEditingController confirmPassword,
   }) async {
     late final AuthStore state = Provider.of<AuthStore>(context, listen: false);
-    
+
     if (password.text != confirmPassword.text) {
       snackBarCustom(
         context,
