@@ -1,6 +1,6 @@
 ﻿namespace ecommerce_core.Models.ProductsCategories;
 
-public class ProductCategorYModel
+public class ProductCategoryModel
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
