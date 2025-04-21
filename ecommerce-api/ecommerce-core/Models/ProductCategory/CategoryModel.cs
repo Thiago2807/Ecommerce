@@ -9,4 +9,10 @@ public class CategoryModel : BaseModel
 
     [BsonElement("description")]
     public string Description { get; set; } = string.Empty;
+
+    [BsonElement("system")]
+    public bool System { get; set; } = false;
+
+    [BsonElement("userid")]
+    public string? UserId { get; set; } = string.Empty;
 }
