@@ -7,4 +7,12 @@
     <RootNamespace>api_ecommerce_pct</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ecommerce-core\ecommerce-core.csproj" />
+  </ItemGroup>
+
 </Project>
