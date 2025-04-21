@@ -7,6 +7,14 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader());
+});
+
 builder.Configuration.AddJsonFile("configuration.json", optional: false, reloadOnChange: true)
     .AddEnvironmentVariables();
 
@@ -46,6 +54,8 @@ builder.Services
     .AddOcelot(builder.Configuration);
 
 var app = builder.Build();
+
+app.UseCors("AllowAll");
 
 app.UseAuthentication();
 await app.UseOcelot();

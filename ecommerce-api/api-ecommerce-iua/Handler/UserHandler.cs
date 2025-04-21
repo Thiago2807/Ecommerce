@@ -6,14 +6,16 @@ public class UserHandler(IUserRepository userRepository, IConfiguration configur
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IConfiguration _configuration = configuration;
 
-    public async Task<ResponseApp<UserModel>> GetUserHandler(string id)
+    public async Task<ResponseApp<UserDto>> GetUserHandler(string id)
     {
         UserModel? user = await _userRepository.GetUserAsync(id: id) 
             ?? throw new NotFoundExceptionCustom("Nenhum usuário encontrado.");
 
+        UserDto response = user.Adapt<UserDto>();
+
         return new() 
         { 
-            Data = user,
+            Data = response,
         };
     }
 

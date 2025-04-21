@@ -17,7 +17,7 @@ public class UserController(IUserHandler userHandler) : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync([FromRoute] string id)
     {
-        ResponseApp<UserModel> response = await _userHandler.GetUserHandler(id);
+        ResponseApp<UserDto> response = await _userHandler.GetUserHandler(id);
 
         return Ok(response);
     }

@@ -1,0 +1,6 @@
+@api_ecommerce_pct_HostAddress = http://localhost:5027
+
+GET {{api_ecommerce_pct_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

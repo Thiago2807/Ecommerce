@@ -1,5 +1,13 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader());
+});
+ 
 builder.Services.AddControllers()
     .ConfigureApiBehaviorOptions(options =>
     {
@@ -24,6 +32,8 @@ builder.Services.AddJwt(builder.Configuration);
 builder.Services.AddDependencyInjection(builder.Configuration);
 
 var app = builder.Build();
+
+app.UseCors("AllowAll");
 
 app.UseExceptionHandler(o => { });
 
