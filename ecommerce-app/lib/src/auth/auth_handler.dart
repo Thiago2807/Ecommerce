@@ -13,6 +13,8 @@ import 'package:marketplace/utils/http_utils.dart';
 import 'package:marketplace/utils/preferences_utils.dart';
 import 'package:provider/provider.dart';
 
+import '../../shared/store/app_store.dart';
+
 class AuthHandler {
   static Future<void> loginUser(
     BuildContext context, {
@@ -44,7 +46,6 @@ class AuthHandler {
 
         return;
       }
-
       final responseJWT = JwtDecoder.decode(responseModel.data["token"]);
 
       // Guardar Dados do usuario
@@ -65,7 +66,7 @@ class AuthHandler {
       if (context.mounted) {
         Navigator.pushNamedAndRemoveUntil(
           context,
-          RoutesName.home,
+          RoutesName.splash,
           (route) => false,
         );
       }

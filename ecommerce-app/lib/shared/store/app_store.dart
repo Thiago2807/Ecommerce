@@ -15,7 +15,7 @@ abstract class _AppStore with Store {
   DateTime? expirationToken;
 
   @observable
-  UserModel user = UserModel.fromEmpty();
+  String idUser = "";
 
   @action
   void addCredential({required String token, required DateTime expirationToken}) {
@@ -25,7 +25,7 @@ abstract class _AppStore with Store {
   }
 
   @action
-  void addUser(UserModel input) {
-    user = input;
+  void addIdUser(String input) {
+    idUser = input;
   }
 }

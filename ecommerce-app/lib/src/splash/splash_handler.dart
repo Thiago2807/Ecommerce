@@ -57,15 +57,15 @@ class SplashHandler {
 
       return;
     } else {
-      if (context.mounted) {
-        final AppStore appStore = Provider.of<AppStore>(context, listen: false);
-
         final responsePreferencesUser =
             await PreferencesUtils.getAsync(key: userKey);
 
+      if (context.mounted) {
+        final AppStore appStore = Provider.of<AppStore>(context, listen: false);
+
         final user = UserModel.fromMap(jsonDecode(responsePreferencesUser));
 
-        appStore.addUser(user);
+        appStore.addIdUser(user.id);
 
         appStore.addCredential(
           token: modelCredentials.token,
@@ -74,7 +74,7 @@ class SplashHandler {
 
         Navigator.pushNamedAndRemoveUntil(
           context,
-          RoutesName.home,
+          RoutesName.defaultView,
           (route) => false,
         );
       }
