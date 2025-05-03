@@ -8,5 +8,5 @@ public interface ICategoryRepository
     Task AddCategoryAsync(CategoryModel input);
     Task UpdateCategoryAsync(CategoryModel input);
     Task<CategoryModel> GetCategoryAsync(string id);
-    Task<PaginationInputModel> GetCategoriesAsync(IQueryCollection query, int page, int pageSize);
+    Task<PaginationInputModel> GetCategoriesAsync(IQueryCollection query, int page, int pageSize, string userId);
 }

@@ -3,6 +3,7 @@ using api_ecommerce_pct.Interfaces.Repository;
 using ecommerce_core.Helpers;
 using ecommerce_core.Models;
 using ecommerce_core.Models.ProductsCategories;
+using Microsoft.Extensions.Primitives;
 using MongoDB.Driver;
 
 namespace api_ecommerce_pct.Repository;
@@ -17,11 +18,15 @@ public class CategoryRepository(AppDbContext _context) : ICategoryRepository
     public async Task UpdateCategoryAsync(CategoryModel input) 
         => await collectionCategory.ReplaceOneAsync(x => x.Id == input.Id, input);
 
-    public async Task<PaginationInputModel> GetCategoriesAsync(IQueryCollection query, int page, int pageSize)
+    public async Task<PaginationInputModel> GetCategoriesAsync(IQueryCollection query, int page, int pageSize, string userId)
     {
+        Dictionary<string, StringValues> dict = new(query) { ["userid"] = userId };
+
+        QueryCollection enrichedQuery = new(dict);
+
         var skip = (page - 1) * pageSize;
 
-        var filter = PaginationHelps.Pagination<CategoryModel>(collectionCategory, query);
+        var filter = PaginationHelps.Pagination<CategoryModel>(collectionCategory, enrichedQuery);
 
         var countItems = await collectionCategory.CountDocumentsAsync(filter);
 

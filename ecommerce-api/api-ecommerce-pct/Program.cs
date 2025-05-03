@@ -1,4 +1,5 @@
 using api_ecommerce_pct.Services;
+using ecommerce_core.Middlewares;
 using ecommerce_core.Models;
 using ecommerce_core.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -37,5 +38,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<UserIdHeaderMiddleware>();
 
 app.Run();
