@@ -15,6 +15,7 @@ public static class DependencyInjection
         services.AddScoped<ICategoryRepository, CategoryRepository>();
 
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IProductHandler, ProductHandler>();
 
         services.AddScoped<AppDbContext>();
         services.AddExceptionHandler<ExceptionHandlerCustom>();

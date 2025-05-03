@@ -18,15 +18,11 @@ public class ProductRepository(AppDbContext _context) : IProductRepository
     public async Task UpdateProductAsync(ProductModel input)
         => await collectionProduct.ReplaceOneAsync(x => x.Id == input.Id, input);
 
-    public async Task<PaginationInputModel> GetProductsAsync(IQueryCollection query, int page, int pageSize, string userId)
+    public async Task<PaginationInputModel> GetProductsAsync(IQueryCollection query, int page, int pageSize)
     {
-        Dictionary<string, StringValues> dict = new(query) { ["userid"] = userId };
-
-        QueryCollection enrichedQuery = new(dict);
-
         var skip = (page - 1) * pageSize;
 
-        var filter = PaginationHelps.Pagination<ProductModel>(collectionProduct, enrichedQuery);
+        var filter = PaginationHelps.Pagination<ProductModel>(collectionProduct, query);
 
         var countItems = await collectionProduct.CountDocumentsAsync(filter);
 

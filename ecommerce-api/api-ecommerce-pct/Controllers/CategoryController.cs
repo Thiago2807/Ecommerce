@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace api_ecommerce_pct.Controllers;
 
 [ApiController]
-[Route("api/v1")]
+[Route("api/v1/category")]
 public class CategoryController(ICategoryHandler categoryHandler) : ControllerBase
 {
     [HttpPost("add")]

@@ -15,4 +15,7 @@ public class ProductModel : BaseModel
 
     [BsonElement("sku")]
     public string Sku { get; set; } = string.Empty;
+
+    [BsonElement("storeId")]
+    public string StoreId { get; set; } = string.Empty;
 }
