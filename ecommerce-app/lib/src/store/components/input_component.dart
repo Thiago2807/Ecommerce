@@ -16,6 +16,8 @@ class TextFormStore {
     this.theLastForm = false,
     this.nextFocus,
     this.maskTextInput,
+    this.keyboardType,
+    this.onChanged,
   });
 
   final TextEditingController controller;
@@ -26,7 +28,10 @@ class TextFormStore {
   final FocusNode focus;
   final bool theLastForm;
   final FocusNode? nextFocus;
+  Function(String)? onChanged;
+  TextInputType? keyboardType = TextInputType.text;
   MaskTextInputFormatter? maskTextInput = MaskTextInputFormatter();
+  bool? enabled;
 }
 
 TextFormField inputStoreComponents(
@@ -46,6 +51,9 @@ TextFormField inputStoreComponents(
     cursorRadius: Radius.circular(size.width),
     validator: validation == null ? null : (value) => validation(value),
     inputFormatters: model.maskTextInput == null ? null : [model.maskTextInput!],
+    keyboardType: model.keyboardType ?? TextInputType.text,
+    enabled: model.enabled ?? true,
+    onChanged: model.onChanged,
     decoration: decorationInput(
       size: size,
       label: model.label,

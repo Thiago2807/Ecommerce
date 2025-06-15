@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:marketplace/core/colors.dart';
 import 'package:marketplace/src/store/components/input_component.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class StoreDetailsView extends StatefulWidget {
   const StoreDetailsView({
@@ -17,6 +18,28 @@ class StoreDetailsView extends StatefulWidget {
 }
 
 class _StoreDetailsViewState extends State<StoreDetailsView> {
+  final TextEditingController _nameController = TextEditingController();
+  final FocusNode _nameFocus = FocusNode();
+
+  final TextEditingController _documentController = TextEditingController();
+  final FocusNode _documentFocus = FocusNode();
+
+  final maskInputDocument = MaskTextInputFormatter(
+    mask: '###.###.###-##',
+    filter: {"#": RegExp(r'[0-9]')},
+    type: MaskAutoCompletionType.lazy,
+  );
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _nameFocus.dispose();
+
+    _documentController.dispose();
+    _documentFocus.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
@@ -43,16 +66,27 @@ class _StoreDetailsViewState extends State<StoreDetailsView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // inputStoreComponents(
-            //   context,
-            //   model: TextFormStore(
-            //     controller: _nameController,
-            //     isPassword: false,
-            //     label: "Nome da loja",
-            //     focus: _nameFocus,
-            //     nextFocus: _documentFocus,
-            //   ),
-            // ),
+            inputStoreComponents(
+              context,
+              model: TextFormStore(
+                controller: _nameController,
+                isPassword: false,
+                label: "Nome da loja",
+                focus: _nameFocus,
+                nextFocus: _documentFocus,
+              ),
+            ),
+            const Gap(12),
+            inputStoreComponents(
+              context,
+              model: TextFormStore(
+                controller: _documentController,
+                isPassword: false,
+                label: "Documento",
+                focus: _documentFocus,
+                maskTextInput: maskInputDocument,
+              ),
+            ),
             Text(widget.id),
             const Gap(24),
             GestureDetector(

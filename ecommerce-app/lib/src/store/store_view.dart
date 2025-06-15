@@ -19,8 +19,17 @@ class _StoreViewState extends State<StoreView> {
   final TextEditingController _documentController = TextEditingController();
   final FocusNode _documentFocus = FocusNode();
 
+  final TextEditingController _cepController = TextEditingController();
+  final FocusNode _cepFocus = FocusNode();
+
   final maskInputDocument = MaskTextInputFormatter(
     mask: '###.###.###-##',
+    filter: {"#": RegExp(r'[0-9]')},
+    type: MaskAutoCompletionType.lazy,
+  );
+
+  final maskInputCep = MaskTextInputFormatter(
+    mask: '#####-###',
     filter: {"#": RegExp(r'[0-9]')},
     type: MaskAutoCompletionType.lazy,
   );
@@ -32,6 +41,9 @@ class _StoreViewState extends State<StoreView> {
 
     _documentController.dispose();
     _documentFocus.dispose();
+
+    _cepController.dispose();
+    _cepFocus.dispose();
     super.dispose();
   }
 
@@ -79,7 +91,28 @@ class _StoreViewState extends State<StoreView> {
                 isPassword: false,
                 label: "Documento",
                 focus: _documentFocus,
+                nextFocus: _cepFocus,
                 maskTextInput: maskInputDocument,
+                keyboardType: TextInputType.number
+              ),
+            ),
+            const Gap(12),
+            inputStoreComponents(
+              context,
+              model: TextFormStore(
+                controller: _cepController,
+                isPassword: false,
+                label: "CEP",
+                focus: _cepFocus,
+                maskTextInput: maskInputCep,
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  if (value.length == 9) {
+                    print("*" * 30);
+                    print("OKKKK");
+                    print("*" * 30);
+                  }
+                }
               ),
             ),
             const Gap(24),
