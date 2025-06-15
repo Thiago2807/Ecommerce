@@ -110,7 +110,7 @@ public class StoreHandler(
     public async Task<ResponseApp<object>> UpdateContactStoreHandler(StoreAddUpdateContactDTO input)
     {
         StoreContactModel contact = await _storeContactRepository.GetStoreContactAsync(input.Id!)
-            ?? throw new Exception("Contato não encontrado.");
+            ?? throw new NotFoundExceptionCustom("Contato não encontrado.");
 
         StoreContactModel storeContact = input.Adapt<StoreContactModel>();
         storeContact.CreatedIn = contact.CreatedIn;
@@ -126,7 +126,7 @@ public class StoreHandler(
     public async Task<ResponseApp<object>> UpdateAddressStoreHandler(StoreUpdateAddressDTO input)
     {
         StoreAddressModel address = await _storeAddressRepository.GetStoreAddressAsync(input.Id!)
-            ?? throw new Exception("Endereço não encontrado.");
+            ?? throw new NotFoundExceptionCustom("Endereço não encontrado.");
 
         StoreAddressModel storeAddress = input.Adapt<StoreAddressModel>();
         storeAddress.CreatedIn = address.CreatedIn;
@@ -142,13 +142,13 @@ public class StoreHandler(
     public async Task<ResponseApp<StoreDTO>> GetStoreHandler(string storeId)
     {
         StoreModel store = await _storeRepository.GetStoreAsync(storeId)
-            ?? throw new Exception("Loja não encontrado.");
+            ?? throw new NotFoundExceptionCustom("Loja não encontrado.");
 
         StoreAddressModel address = await _storeAddressRepository.GetStoreAddressAsync(store.AddressId)
-            ?? throw new Exception("Endereço não encontrado.");
+            ?? throw new NotFoundExceptionCustom("Endereço não encontrado.");
 
         List<StoreContactModel> contact = await _storeContactRepository.GetStoreContactByStoreAsync(store.Id)
-            ?? throw new Exception("Contato não encontrado.");
+            ?? throw new NotFoundExceptionCustom("Contato não encontrado.");
 
         StoreDTO storeResponse = store.Adapt<StoreDTO>();
         List<StoreContactModel> storeContactResponse = contact.Adapt<List<StoreContactModel>>();
@@ -165,7 +165,7 @@ public class StoreHandler(
     public async Task<ResponseApp<StoreByUserModel>> GetStoreByUserHandler(string userId)
     {
         StoreModel store = await _storeRepository.GetStoreByUserAsync(userId)
-            ?? throw new Exception("Loja não encontrado.");
+            ?? throw new NotFoundExceptionCustom("Nenhuma empresa encontrada");
 
         StoreByUserModel storeResponse = store.Adapt<StoreByUserModel>();
 

@@ -7,6 +7,7 @@ import 'package:marketplace/core/const.dart';
 import 'package:marketplace/core/routes.dart';
 import 'package:marketplace/src/profile/components/button_profile_component.dart';
 import 'package:marketplace/src/profile/model/profile_model.dart';
+import 'package:marketplace/src/profile/model/store_list_model.dart';
 import 'package:marketplace/src/profile/profile_handler.dart';
 import 'package:marketplace/utils/preferences_utils.dart';
 
@@ -19,11 +20,13 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   late final Future<ProfileModel> getUserData;
+  late final Future<StoreListModel?> getStoreList;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     getUserData = ProfileHandler.getUserData(context);
+    getStoreList = ProfileHandler.getStoreList();
   }
 
   @override
@@ -83,10 +86,39 @@ class _ProfileViewState extends State<ProfileView> {
                         color: Colors.grey.shade400),
                   ),
                   const Gap(16),
-                  buttonProfileComponent(
-                    icon: HugeIcons.strokeRoundedStore02,
-                    text: "Crie a sua loja agora!",
-                    click: () => Navigator.pushNamed(context, RoutesName.store),
+                  FutureBuilder(
+                    future: getStoreList,
+                    builder: (context, snapshotStore) {
+                      if (snapshotStore.connectionState ==
+                          ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: Color(
+                              ColorsApp.primary,
+                            ),
+                          ),
+                        );
+                      }
+
+                      if (snapshotStore.data == null) {
+                        return buttonProfileComponent(
+                          icon: HugeIcons.strokeRoundedStore02,
+                          text: "Crie a sua loja agora!",
+                          click: () =>
+                              Navigator.pushNamed(context, RoutesName.store),
+                        );
+                      } else {
+                        return buttonProfileComponent(
+                          icon: HugeIcons.strokeRoundedStore02,
+                          text: "Sua loja: ${snapshotStore.data?.name ?? ""}",
+                          click: () => Navigator.pushNamed(
+                            context,
+                            RoutesName.storeDetails,
+                            arguments: snapshotStore.data?.id ?? ""
+                          ),
+                        );
+                      }
+                    },
                   ),
                   const Gap(12),
                   buttonProfileComponent(
