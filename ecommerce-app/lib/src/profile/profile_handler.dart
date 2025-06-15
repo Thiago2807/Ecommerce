@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:marketplace/shared/model/response_request_model.dart';
 import 'package:marketplace/shared/store/app_store.dart';
 import 'package:marketplace/shared/widgets/snackbar_custom.dart';
@@ -8,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class ProfileHandler {
   static Future<ProfileModel> getUserData(BuildContext context) async {
-    final AppStore store = Provider.of<AppStore>(context, listen: false);
+    late final AppStore store = GetIt.I.get<AppStore>();
     final client = await HttpUtils.instance();
 
     client.options.headers = {

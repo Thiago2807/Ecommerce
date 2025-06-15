@@ -5,6 +5,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:marketplace/core/colors.dart';
 import 'package:marketplace/core/const.dart';
 import 'package:marketplace/core/routes.dart';
+import 'package:marketplace/src/profile/components/button_profile_component.dart';
 import 'package:marketplace/src/profile/model/profile_model.dart';
 import 'package:marketplace/src/profile/profile_handler.dart';
 import 'package:marketplace/utils/preferences_utils.dart';
@@ -77,14 +78,21 @@ class _ProfileViewState extends State<ProfileView> {
                     snapshot.data!.email,
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12,
-                      color: Colors.grey.shade400
-                    ),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                        color: Colors.grey.shade400),
                   ),
                   const Gap(16),
-                  GestureDetector(
-                    onTap: () async {
+                  buttonProfileComponent(
+                    icon: HugeIcons.strokeRoundedStore02,
+                    text: "Crie a sua loja agora!",
+                    click: () => Navigator.pushNamed(context, RoutesName.store),
+                  ),
+                  const Gap(12),
+                  buttonProfileComponent(
+                    icon: HugeIcons.strokeRoundedLogout03,
+                    text: "Sair",
+                    click: () async {
                       await PreferencesUtils.deleteAsync(key: userKey);
                       await PreferencesUtils.deleteAsync(key: credentialsKey);
 
@@ -96,51 +104,7 @@ class _ProfileViewState extends State<ProfileView> {
                         );
                       }
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 5,
-                            offset: Offset(5, 3),
-                            color: Colors.black12,
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: LayoutBuilder(
-                        builder: (context, constraints) => Container(
-                          height: 46,
-                          padding: EdgeInsets.symmetric(
-                            vertical: 2,
-                            horizontal: constraints.maxWidth * .06,
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                HugeIcons.strokeRoundedLogout03,
-                                color: Color(ColorsApp.primary),
-                              ),
-                              const Gap(12),
-                              Expanded(
-                                child: Text(
-                                  "Sair",
-                                  style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                              Icon(
-                                HugeIcons.strokeRoundedArrowRight01,
-                                color: Colors.grey.shade500,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
+                  ),
                 ],
               ),
             );

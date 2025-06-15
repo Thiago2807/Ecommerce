@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:marketplace/core/const.dart';
 import 'package:marketplace/core/routes.dart';
 import 'package:marketplace/shared/model/user_model.dart';
@@ -57,11 +58,11 @@ class SplashHandler {
 
       return;
     } else {
-        final responsePreferencesUser =
-            await PreferencesUtils.getAsync(key: userKey);
+      final responsePreferencesUser =
+          await PreferencesUtils.getAsync(key: userKey);
 
       if (context.mounted) {
-        final AppStore appStore = Provider.of<AppStore>(context, listen: false);
+        late final AppStore appStore = GetIt.I.get<AppStore>();
 
         final user = UserModel.fromMap(jsonDecode(responsePreferencesUser));
 

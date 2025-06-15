@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:marketplace/core/colors.dart';
-import 'package:marketplace/core/const.dart';
-import 'package:marketplace/core/routes.dart';
-import 'package:marketplace/shared/model/user_model.dart';
-import 'package:marketplace/utils/preferences_utils.dart';
-import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../shared/store/app_store.dart';
 import 'components/appbar_home_components.dart';
@@ -19,10 +12,10 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  late final appStore = Provider.of<AppStore>(context, listen: false);
+  late final AppStore appStore = GetIt.I.get<AppStore>();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     final Size size = MediaQuery.sizeOf(context);
 
     return Scaffold(

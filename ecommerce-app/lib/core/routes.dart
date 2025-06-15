@@ -4,6 +4,7 @@ import 'package:marketplace/src/default/default_view.dart';
 import 'package:marketplace/src/home/home_view.dart';
 import 'package:marketplace/src/profile/profile_view.dart';
 import 'package:marketplace/src/splash/splash_view.dart';
+import 'package:marketplace/src/store/store_view.dart';
 
 Map<String, WidgetBuilder> routes = {
   RoutesName.splash: (_) => const SplashView(),
@@ -11,6 +12,7 @@ Map<String, WidgetBuilder> routes = {
   RoutesName.home: (_) => const HomeView(),
   RoutesName.defaultView: (_) => const DefaultView(),
   RoutesName.profile: (_) => const ProfileView(),
+  RoutesName.store: (_) => const StoreView(),
 };
 
 T getArguments<T>(BuildContext context) {
@@ -25,4 +27,5 @@ class RoutesName {
   static String get home => "/home";
   static String get defaultView => "/default";
   static String get profile => "/profile";
+  static String get store => "/store";
 }
