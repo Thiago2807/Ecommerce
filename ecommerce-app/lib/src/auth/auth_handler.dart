@@ -37,8 +37,7 @@ class AuthHandler {
 
     if (context.mounted) {
       if (response.statusCode != 200) {
-        snackBarCustom(
-          context,
+        AppSnackBar.show(
           content: responseModel.message ?? "Não foi possível realizar o login",
           color: Colors.redAccent,
           textColor: Colors.white,
@@ -84,8 +83,7 @@ class AuthHandler {
     late final AuthStore state = Provider.of<AuthStore>(context, listen: false);
 
     if (password.text != confirmPassword.text) {
-      snackBarCustom(
-        context,
+      AppSnackBar.show(
         content: "As senhas informadas não coincidem.",
         color: Colors.redAccent,
         textColor: Colors.white,
@@ -110,8 +108,7 @@ class AuthHandler {
 
     if (context.mounted) {
       if (response.statusCode != 200) {
-        snackBarCustom(
-          context,
+        AppSnackBar.show(
           content: responseModel.message ?? "Não foi possível realizar o login",
           color: Colors.redAccent,
           textColor: Colors.white,

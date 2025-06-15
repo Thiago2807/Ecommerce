@@ -18,6 +18,8 @@ class TextFormStore {
     this.maskTextInput,
     this.keyboardType,
     this.onChanged,
+    this.initializeController,
+    this.enabled,
   });
 
   final TextEditingController controller;
@@ -29,46 +31,60 @@ class TextFormStore {
   final bool theLastForm;
   final FocusNode? nextFocus;
   Function(String)? onChanged;
+  String? initializeController;
   TextInputType? keyboardType = TextInputType.text;
   MaskTextInputFormatter? maskTextInput = MaskTextInputFormatter();
   bool? enabled;
 }
 
-TextFormField inputStoreComponents(
+Widget inputStoreComponents(
   BuildContext context, {
   required TextFormStore model,
   Function(String?)? validation,
 }) {
+  if (model.initializeController != null) {
+    model.controller.text = model.initializeController!;
+  }
+
   final AuthStore authStore = Provider.of<AuthStore>(context, listen: false);
   final Size size = MediaQuery.sizeOf(context);
 
-  return TextFormField(
-    cursorWidth: 1.5,
-    focusNode: model.focus,
-    controller: model.controller,
-    obscureText: model.isPassword ? model.stateViewPassword : false,
-    cursorColor: Color(ColorsApp.primary),
-    cursorRadius: Radius.circular(size.width),
-    validator: validation == null ? null : (value) => validation(value),
-    inputFormatters: model.maskTextInput == null ? null : [model.maskTextInput!],
-    keyboardType: model.keyboardType ?? TextInputType.text,
-    enabled: model.enabled ?? true,
-    onChanged: model.onChanged,
-    decoration: decorationInput(
-      size: size,
-      label: model.label,
-      prefixIcon: model.prefixIcon,
-      isPassword: model.isPassword,
-      actionViewPassword: authStore.alterViewPassword,
-      stateViewPassword: model.stateViewPassword,
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(size.width),
+      color: (model.enabled ?? true)
+          ? Colors.transparent
+          : Color(ColorsApp.gray).withOpacity(.2),
     ),
-    onFieldSubmitted: (_) {
-      if (model.theLastForm) {
-        FocusScope.of(context).unfocus();
-      } else {
-        FocusScope.of(context).requestFocus(model.nextFocus);
-      }
-    },
+    child: TextFormField(
+      cursorWidth: 1.5,
+      focusNode: model.focus,
+      controller: model.controller,
+      obscureText: model.isPassword ? model.stateViewPassword : false,
+      cursorColor: Color(ColorsApp.primary),
+      cursorRadius: Radius.circular(size.width),
+      validator: validation == null ? null : (value) => validation(value),
+      inputFormatters:
+          model.maskTextInput == null ? null : [model.maskTextInput!],
+      keyboardType: model.keyboardType ?? TextInputType.text,
+      enabled: model.enabled ?? true,
+      onChanged: model.onChanged,
+      decoration: decorationInput(
+        size: size,
+        label: model.label,
+        prefixIcon: model.prefixIcon,
+        isPassword: model.isPassword,
+        actionViewPassword: authStore.alterViewPassword,
+        stateViewPassword: model.stateViewPassword,
+      ),
+      onFieldSubmitted: (_) {
+        if (model.theLastForm) {
+          FocusScope.of(context).unfocus();
+        } else {
+          FocusScope.of(context).requestFocus(model.nextFocus);
+        }
+      },
+    ),
   );
 }
 
@@ -113,11 +129,14 @@ InputDecoration decorationInput({
     enabledBorder: borderInput(type: "enabled", size: size, error: false),
     errorBorder: borderInput(type: "enabled", size: size, error: true),
     focusedErrorBorder: borderInput(type: "enabled", size: size, error: true),
+    disabledBorder: borderInput(type: "enabled", size: size, error: false),
     contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-    prefixIcon: prefixIcon == null ? null : Icon(
-      prefixIcon,
-      color: Color(ColorsApp.gray),
-    ),
+    prefixIcon: prefixIcon == null
+        ? null
+        : Icon(
+            prefixIcon,
+            color: Color(ColorsApp.gray),
+          ),
     suffixIcon: GestureDetector(
       onTap: () => isPassword ? actionViewPassword() : null,
       child: isPassword

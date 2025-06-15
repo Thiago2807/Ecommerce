@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:marketplace/core/colors.dart';
+import 'package:marketplace/shared/widgets/snackbar_custom.dart';
 
 import 'core/routes.dart';
 
@@ -12,6 +13,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: RoutesName.splash,
       routes: routes,
+      scaffoldMessengerKey: AppSnackBar.messengerKey,
       theme: ThemeData(
         scaffoldBackgroundColor: Color(
           ColorsApp.white,
@@ -20,3 +22,4 @@ class App extends StatelessWidget {
     );
   }
 }
+

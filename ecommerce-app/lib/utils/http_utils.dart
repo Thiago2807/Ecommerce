@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:marketplace/services/interceptors/error_server_interceptor.dart';
 import 'package:marketplace/services/interceptors/uauthorizedInterceptor.dart';
 
 class HttpUtils {
@@ -11,6 +12,7 @@ class HttpUtils {
 
   static final interceptors = [
     Uauthorizedinterceptor(),
+    ErrorServerInterceptor()
   ];
 
   static Future<Dio> instance() async {

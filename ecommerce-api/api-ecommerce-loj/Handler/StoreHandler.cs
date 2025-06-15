@@ -40,7 +40,7 @@ public class StoreHandler(
 
         storeModel = await _storeRepository.AddStoreAsync(storeModel);
 
-        if (input.Contacts != null)
+        if (input.Contacts != null && input.Contacts.Count != 0)
         {
             List<StoreContactModel> contactModel = [];
 

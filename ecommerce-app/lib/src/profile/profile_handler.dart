@@ -22,8 +22,7 @@ class ProfileHandler {
     if (context.mounted) {
       if (responseRequest.statusCode != 200 ||
           (responseFormat.error ?? false)) {
-        snackBarCustom(
-          context,
+        AppSnackBar.show(
           content: responseFormat.message ??
               "Não foi possível obter os dados do usuário",
           color: Colors.redAccent,
