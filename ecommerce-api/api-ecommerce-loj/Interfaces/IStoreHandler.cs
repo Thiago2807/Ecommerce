@@ -12,4 +12,5 @@ public interface IStoreHandler
     Task<ResponseApp<object>> UpdateContactStoreHandler(StoreAddUpdateContactDTO input);
     Task<ResponseApp<object>> UpdateAddressStoreHandler(StoreUpdateAddressDTO input);
     Task<ResponseApp<StoreDTO>> GetStoreHandler(string storeId);
+    Task<ResponseApp<StoreByUserModel>> GetStoreByUserHandler(string userId);
 }

@@ -29,6 +29,15 @@ public class StoreRepository (AppDbContext _context)
         return response;
     }
 
+    public async Task<StoreModel?> GetStoreByUserAsync(string id)
+    {
+        var filter = Builders<StoreModel>.Filter.Eq(x => x.UserId, id);
+
+        var response = await collectionStore.Find(filter).FirstOrDefaultAsync();
+
+        return response;
+    }
+
     public async Task UpdateStoreAsync(string id, StoreModel user)
     => await collectionStore.ReplaceOneAsync(x => x.Id == id, user);
 

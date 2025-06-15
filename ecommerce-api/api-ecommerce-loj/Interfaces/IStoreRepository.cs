@@ -10,4 +10,5 @@ public interface IStoreRepository
     Task<StoreModel> AddStoreAsync(StoreModel input);
     Task UpdateStoreAsync(string id, StoreModel user);
     Task<PaginationInputModel> GetStoresAsync(IQueryCollection query, int page, int pageSize);
+    Task<StoreModel?> GetStoreByUserAsync(string id);
 }

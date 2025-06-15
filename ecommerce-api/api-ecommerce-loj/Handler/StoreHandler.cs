@@ -7,8 +7,8 @@ using MongoDB.Bson;
 
 namespace api_ecommerce_loj.Handler;
 
-public class StoreHandler (
-        IStoreRepository storeRepository, IStoreContactRepository storeContactRepository , IStoreAddressRepository storeAddressRepository
+public class StoreHandler(
+        IStoreRepository storeRepository, IStoreContactRepository storeContactRepository, IStoreAddressRepository storeAddressRepository
     )
     : IStoreHandler
 {
@@ -155,6 +155,19 @@ public class StoreHandler (
 
         storeResponse.Address = address;
         storeResponse.Contacts = storeContactResponse;
+
+        return new()
+        {
+            Data = storeResponse
+        };
+    }
+
+    public async Task<ResponseApp<StoreByUserModel>> GetStoreByUserHandler(string userId)
+    {
+        StoreModel store = await _storeRepository.GetStoreByUserAsync(userId)
+            ?? throw new Exception("Loja não encontrado.");
+
+        StoreByUserModel storeResponse = store.Adapt<StoreByUserModel>();
 
         return new()
         {

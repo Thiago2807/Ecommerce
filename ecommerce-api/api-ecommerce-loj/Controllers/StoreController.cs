@@ -6,7 +6,7 @@ namespace api_ecommerce_loj.Controllers;
 
 [ApiController]
 [Route("api/v1")]
-public class StoreController (IStoreHandler storeHandler)
+public class StoreController(IStoreHandler storeHandler)
     : ControllerBase
 {
     [HttpPost("add")]
@@ -52,9 +52,19 @@ public class StoreController (IStoreHandler storeHandler)
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> UpdateStoreAddressAsync([FromRoute] string id)
+    public async Task<IActionResult> GetStoreAsync([FromRoute] string id)
     {
         var response = await storeHandler.GetStoreHandler(id);
+
+        return Ok(response);
+    }
+    
+    [HttpGet()]
+    public async Task<IActionResult> GetStoreByUserAsync()
+    {
+        string userId = Request.Headers.First(x => x.Key == "X-User-Id").Value!;
+
+        var response = await storeHandler.GetStoreByUserHandler(userId);
 
         return Ok(response);
     }
